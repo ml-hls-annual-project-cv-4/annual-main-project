@@ -9,4 +9,4 @@
 | Коваленко Максим | max-kovalenko | 
 
 ## Checkpoints
-1. Checkpoint1
+1. Этапы выполнения годового проекта
