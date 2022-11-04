@@ -1,0 +1,1 @@
+—сылка на датасет: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git
