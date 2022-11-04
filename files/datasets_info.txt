@@ -2,6 +2,16 @@
 
 Данный датасет свободно распространяется компанией Berkley DeepDrive (https://bdd-data.berkeley.edu/). Однако, чтобы получить его, необходимо зарегистрироваться у них на сайте.
 
+Отсылка на авторов датасета:
+
+@InProceedings{bdd100k,
+    author = {Yu, Fisher and Chen, Haofeng and Wang, Xin and Xian, Wenqi and Chen, Yingying and Liu, Fangchen and Madhavan, Vashisht and Darrell, Trevor},
+    title = {BDD100K: A Diverse Driving Dataset for Heterogeneous Multitask Learning},
+    booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month = {June},
+    year = {2020}
+}
+
 Состоит датасет из тренировочных и проверочных данных.
 
 Сами данные представляют из себя набор изображений и json файла. 
@@ -37,12 +47,4 @@ Json файл представляет из себя огромный массив объектов со следующими свойствами
 	4.5. Геометрия:
 		4.5.1. box2d - объект, который хранит координаты диагонали прямоугольника для обводки объекта. Используется для подавляющего большинства объектов, кроме обозначения дороги и прочего.
 		4.5.2. poly2d - объект, описывающий полигон. Имеет свойство vertices для хранения информации о координатах вершин полигона для обводки объекта (в основном для всяких дорог используется)
-		4.5.3. id - идентификатор метки. Нигде не нашлось повторяющейся метки.
-
-@InProceedings{bdd100k,
-    author = {Yu, Fisher and Chen, Haofeng and Wang, Xin and Xian, Wenqi and Chen, Yingying and Liu, Fangchen and Madhavan, Vashisht and Darrell, Trevor},
-    title = {BDD100K: A Diverse Driving Dataset for Heterogeneous Multitask Learning},
-    booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month = {June},
-    year = {2020}
-}
+	4.6. id - идентификатор метки. Нигде не нашлось повторяющейся метки.
