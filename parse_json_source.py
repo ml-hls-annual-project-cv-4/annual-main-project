@@ -109,5 +109,3 @@ for tblname, filename in [
                         mode='start'
                 if mode == 'collect':
                     obj_to_parse += sym
-                    
-2+2
