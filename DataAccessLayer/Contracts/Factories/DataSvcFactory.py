@@ -1,14 +1,14 @@
 from abc import *
 
-from src.Contracts.DataServices.EDADataSvc import AbstractEDADataService
-from src.Contracts.DataServices.TrainDataSvc import AbstractTrainDataService
+from DataAccessLayer.Contracts.DataServices.EDADataSvc import AbstractEDADataService
+from DataAccessLayer.Contracts.DataServices.TrainDataSvc import AbstractTrainDataService
 
 
 class AbstractDataServiceFactory(ABC):
     @abstractmethod
-    def GetEDADataService(self) -> AbstractEDADataService:
+    def GetEDADataService(self, source) -> AbstractEDADataService:
         pass
 
     @abstractmethod
-    def GetTrainDataService(self) -> AbstractTrainDataService:
+    def GetTrainDataService(self, source) -> AbstractTrainDataService:
         pass
