@@ -1,7 +1,7 @@
 import os
 import sys
-sys.path.append(os.path.abspath("databases/"))
-import dwh
+sys.path.append(os.path.abspath("../databases/"))
+import src.databases.dwh as dwh
 import numpy as np
 import pandas as pd
 from multiprocessing import Pool, cpu_count

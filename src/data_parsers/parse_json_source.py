@@ -2,8 +2,8 @@ import json
 import pandas as pd
 import sys 
 import os
-sys.path.append(os.path.abspath("databases/"))
-import dwh
+sys.path.append(os.path.abspath("../databases/"))
+import src.databases.dwh as dwh
         
 def parse_one_img (obj_to_parse):
     '''Func that parse piece of json corresponded to one img'''        
@@ -102,9 +102,9 @@ for tblname, filename in [
                     if brackets_counter == 0:
                         obj_to_parse += sym
                         df = parse_one_img(obj_to_parse)
-                        dwh.insert_dataframe(dbname='cv_project', 
-                                            tblname=tblname, 
-                                            df=df) 
+                        dwh.insert_dataframe(dbname='cv_project',
+                                             tblname=tblname,
+                                             df=df)
                         obj_to_parse=''
                         mode='start'
                 if mode == 'collect':

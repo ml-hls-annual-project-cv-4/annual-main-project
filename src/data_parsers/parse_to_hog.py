@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.append(os.path.abspath("databases/"))
+sys.path.append(os.path.abspath("../databases/"))
 import dwh
 import pandas as pd
 import numpy as np
@@ -11,7 +11,7 @@ import cv2
 hog_version = ''
 img_per_ls = 50
 
-def create_table(tblname):
+def create_table(table_name):
     with dwh.def_client() as client:
         client.execute(
             'use cv_project'    
@@ -20,13 +20,13 @@ def create_table(tblname):
             'show tables'
         )
         
-    if tblname not in tables_list:
+    if table_name not in tables_list:
         with dwh.def_client() as client:
             client.execute(
                 'use cv_project'
             )
             client.execute(
-                f'create table {tblname} ('
+                f'create table {table_name} ('
                     'name String,'
                     'weather String,'
                     'scene String,'
