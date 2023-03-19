@@ -1,7 +1,4 @@
-import sys
-import os
-sys.path.append(os.path.abspath("databases/"))
-import dwh
+import src.databases.dwh as dwh
 
 # Default database - cv_project
 # Also default user has wrights to write to test db

@@ -1,6 +1,5 @@
 import os
 import sys
-sys.path.append(os.path.abspath("../databases/"))
 import src.databases.dwh as dwh
 import numpy as np
 import pandas as pd
@@ -59,22 +58,6 @@ def get_img_names_lists(tbl_images, tbl_boxes, img_per_ls):
         ls_start += img_per_ls
     return res_ls
 
-def select_db_images(ls_names, tbl_name):
-    str_names = ', '.join([f"'{i}'" for i in ls_names])
-    with dwh.def_client() as client:
-        df = client.query_dataframe(
-            f"select * from {tbl_name} where name in ({str_names})"
-        )
-    return df
-
-def select_db_labels(ls_names, tbl_name):
-    str_names = ', '.join([f"'{i}'" for i in ls_names])
-    with dwh.def_client() as client:
-        df = client.query_dataframe(
-            f"select * from {tbl_name} where name in ({str_names})"
-        )
-    return df
-
 def cut_box_from_image(df_images, image_name, x1, y1, x2, y2):
     ls_image = df_images[lambda x: x.name == image_name]['img_bgr_row'].tolist()
     ls_box = ls_image[int(np.floor(y1)):int(np.ceil(y2))]
@@ -82,8 +65,8 @@ def cut_box_from_image(df_images, image_name, x1, y1, x2, y2):
     return ls_box
 
 def write_boxes_batch(ls_names_batch):
-    df_images = select_db_images(ls_names_batch, f'images_{data_batch}')
-    df_labels = select_db_labels(ls_names_batch, f'labels_{data_batch}')
+    df_images = dwh.select_db_images(ls_names_batch, f'images_{data_batch}')
+    df_labels = dwh.select_db_labels(ls_names_batch, f'labels_{data_batch}')
     df_labels = df_labels[[not i for i in pd.isna(df_labels['box2d_x1'])]].iloc[:, 0:16]
     df_labels['ls_box_img'] = df_labels.apply(
         lambda x: cut_box_from_image(df_images, x['name'], x.box2d_x1, x.box2d_y1, x.box2d_x2, x.box2d_y2),
