@@ -1,13 +1,11 @@
-# Потом перейдет в нормальный вид в качестве класса вместе со всеми парсерами
-
-#Pickle файл явялется приватным, его надо запрашивать отдельно
+from clickhouse_driver import Client
+import pickle
+    
 def def_client(creds_file='databases/dwh_def_user.pickle',
                settings={'use_numpy': True}):
     """Function returns connection client to dwh interface"""
-    from clickhouse_driver import Client
-    import pickle
-
-    with open('databases/dwh_def_user.pickle', 'rb') as handle:
+    
+    with open('src/databases/dwh_def_user.pickle', 'rb') as handle:
         def_user_creds = pickle.load(handle)
 
     client = Client(
@@ -42,5 +40,34 @@ def read_dataframe(dbname, tblname, dwh_client=def_client()):
         df = client.query_dataframe(
             'select *'
             f'from {tblname}'
+        )
+    return df
+
+def select_db_labels(ls_names, tbl_name, dbname='cv_project'):
+    '''
+    Func gets dataframe with metadata corresponding to image names were given as argument ls_names
+    '''
+    if not isinstance(ls_names, list):
+        ls_names = [ls_names,]
+    str_names = ', '.join([f"'{i}'" for i in ls_names])
+    with def_client() as client:
+        client.execute(
+            f'use {dbname}'
+        )
+        df = client.query_dataframe(
+            f"select * from {tbl_name} where name in ({str_names})"
+        )
+    return df
+
+def select_db_images(ls_names, tbl_name):
+    '''
+    Func gets dataframe with image arrays corresponding to image names were given as argument ls_names
+    '''
+    if not isinstance(ls_names, list):
+        ls_names = [ls_names,]
+    str_names = ', '.join([f"'{i}'" for i in ls_names])
+    with def_client() as client:
+        df = client.query_dataframe(
+            f"select * from {tbl_name} where name in ({str_names})"
         )
     return df
