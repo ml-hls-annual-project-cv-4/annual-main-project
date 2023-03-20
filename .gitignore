@@ -281,3 +281,7 @@ poetry.toml
 
 # ruff
 .ruff_cache/
+
+# Credentials
+# dwh
+*dwh_def_user.pickle
