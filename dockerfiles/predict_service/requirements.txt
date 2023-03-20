@@ -1,0 +1,11 @@
+scikit-learn
+numpy
+pandas
+clickhouse_driver
+opencv-python-headless
+scikit-image
+lightgbm
+matplotlib
+fastapi
+uvicorn[standard]
+python-multipart
