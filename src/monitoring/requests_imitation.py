@@ -22,6 +22,7 @@ def sleep_random_time(lam):
 
 def choose_random_image():
     random_img_number = random.randint(0,len(os.listdir('datasets/images/train/')))
+    print(os.listdir('datasets/images/train/')[random_img_number])
     return os.listdir('datasets/images/train/')[random_img_number]
 
 def make_reuqest(img_name, predict_service_host = 'http://predict_service:8000'):
@@ -52,4 +53,4 @@ def make_parallel_requests(requests_number, sleep_time):
     pass
 
 while True:
-    make_parallel_requests(150, 5)
+    make_parallel_requests(5, 5)
