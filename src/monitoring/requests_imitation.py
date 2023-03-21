@@ -24,7 +24,7 @@ def choose_random_image():
     random_img_number = random.randint(0,len(os.listdir('datasets/images/train/')))
     return os.listdir('datasets/images/train/')[random_img_number]
 
-def make_reuqest(img_name, predict_service_host = 'http://158.160.19.121:8000'):
+def make_reuqest(img_name, predict_service_host = 'predict_service'):
     '''
     Function sends POST request to predict_service. 
     Images stored in datasets/images/train/ directory thus it should mounted to docker
