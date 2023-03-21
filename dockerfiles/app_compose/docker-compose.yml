@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  predict_service:
+    container_name: predict_service
+    build: 
+      context: ../predict_service
+      args: 
+        BRANCH: fastapi_temp
+    networks:
+      - app_net
+
+  requests_imitation:
+    container_name: requests_imitation
+    build: 
+      context: ../requests_imitation
+      args:
+        BRANCH: requests_imitation
+    networks:
+      - app_net
+    volumes:
+      - ~/pyrepos/annual-main-project/datasets/images/train:/home/annual-main-project/datasets/images/train
+
+networks:
+  app_net:
