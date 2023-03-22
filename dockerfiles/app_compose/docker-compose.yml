@@ -21,5 +21,21 @@ services:
     volumes:
       - ~/pyrepos/annual-main-project/datasets/images/train:/home/annual-main-project/datasets/images/train
 
+  prometheus:
+    container_name: prometheus
+    image: bitnami/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - $PWD/../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app_net
+
+  node-exporter:
+    container_name: node-exporter
+    image: bitnami/node-exporter
+    networks:
+      - app_net
+
 networks:
   app_net:
