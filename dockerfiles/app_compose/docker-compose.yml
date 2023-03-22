@@ -15,11 +15,11 @@ services:
     build: 
       context: ../requests_imitation
       args:
-        BRANCH: requests_imitation
+        BRANCH: develop
     networks:
       - app_net
     volumes:
-      - ~/pyrepos/annual-main-project/datasets/images/train:/home/annual-main-project/datasets/images/train
+      - ../../datasets/images/train:/home/annual-main-project/datasets/images/train
 
   prometheus:
     container_name: prometheus
@@ -27,7 +27,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - $PWD/../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - app_net
 

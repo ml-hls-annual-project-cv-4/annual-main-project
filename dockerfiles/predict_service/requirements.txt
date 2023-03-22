@@ -9,3 +9,4 @@ matplotlib
 fastapi
 uvicorn[standard]
 python-multipart
+starlette_exporter
