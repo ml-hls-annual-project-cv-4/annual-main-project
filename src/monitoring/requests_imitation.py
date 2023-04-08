@@ -5,51 +5,69 @@ import numpy as np
 import time
 from multiprocessing import Pool
 
-def gen_requests_number(lam):
-    '''
-    Function generates random number from poisson distribution. 
-    This number is supposed to be used for define parallel requests quantity
-    '''
-    return round(np.random.poisson(lam))
+class ReqImitation:
 
-def sleep_random_time(lam):
-    '''
-    Function makes system sleep for random time from poisson distribution
-    '''
-    time_to_sleep = max(0., np.random.poisson(lam))
-    time.sleep(time_to_sleep)
-    pass
-
-def choose_random_image():
-    random_img_number = random.randint(0,len(os.listdir('datasets/images/train/')))
-    return os.listdir('datasets/images/train/')[random_img_number]
-
-def make_reuqest(img_name, predict_service_host = 'http://predict_service:80'):
-    '''
-    Function sends POST request to predict_service. 
-    Images stored in datasets/images/train/ directory thus it should mounted to docker
-    '''
-    file = {'selectedFile': open(f'datasets/images/train/{img_name}', 'rb')}
-                
-    response=requests.request(
-        'POST', 
-        url=f'{predict_service_host}/uploadfile/',
-        files=file)
+    def __init__(self, requests_number, sleep_time, 
+                 images_folder='dataset/images/', 
+                 predict_service_host = 'http://predict_service:80'):
+        self.requests_number = requests_number
+        self.sleep_time = sleep_time
+        self.images_folder = images_folder
+        self.predict_service_host = predict_service_host
     
-    return response.status_code
+    def gen_requests_number(self):
+        '''
+        Function generates random number from poisson distribution. 
+        This number is supposed to be used for define parallel requests quantity
+        '''
+        return round(np.random.poisson(self.requests_number))
 
-def make_parallel_requests(requests_number, sleep_time):
-    '''
-    Function sends random number of parallel requests then sleeps random seconds
-    '''
-    requests_number = gen_requests_number(requests_number)
-    images = [choose_random_image() for i in range(requests_number)]
+    def sleep_random_time(self):
+        '''
+        Function makes system sleep for random time from poisson distribution
+        '''
+        time_to_sleep = max(0., np.random.poisson(self.sleep_time))
+        time.sleep(time_to_sleep)
+        pass
 
-    with Pool(requests_number) as pool:
-            pool.map(make_reuqest, images)
-            
-    sleep_random_time(sleep_time)
+    def choose_random_image(self):
+        random_img_number = random.randint(0, len(os.listdir(self.images_folder)) - 1)
+        return os.listdir(self.images_folder)[random_img_number]
+
+    def make_reuqest(self, img_name):
+        '''
+        Function sends POST request to predict_service. 
+        Images stored in dataset/images/ directory thus it should mounted to docker
+        '''
+        file = {'selectedFile': open(f'dataset/images/{img_name}', 'rb')}
+                    
+        response=requests.request(
+            'POST', 
+            url=f'{self.predict_service_host}/uploadfile/',
+            files=file)
+        
+        return response.status_code
+
+    def make_parallel_requests(self):
+        '''
+        Function sends random number of parallel requests then sleeps random seconds
+        '''
+        requests_number = self.gen_requests_number()
+        images = [self.choose_random_image() for i in range(requests_number)]
+
+        with Pool(requests_number) as pool:
+                pool.map(self.make_reuqest, images)
+                
+        self.sleep_random_time()
+        
+    
     pass
 
-while True:
-    make_parallel_requests(150, 5)
+
+if __name__ == '__main__':
+    reqs = ReqImitation(requests_number=5, sleep_time=5,
+                        images_folder='dataset/images/', 
+                        predict_service_host = 'http://predict_service:80')
+
+    while True:
+        reqs.make_parallel_requests()
