@@ -4,18 +4,18 @@ services:
   predict_service:
     container_name: predict_service
     build: 
-      context: ../predict_service
-      args: 
-        BRANCH: fastapi_temp
+     context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/predict_service
+     args:
+      BRANCH: app_improv  
     networks:
       - app_net
 
   requests_imitation:
     container_name: requests_imitation
     build: 
-      context: ../requests_imitation
+      context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/requests_imitation
       args:
-        BRANCH: develop
+       BRANCH: app_improv
     networks:
       - app_net
     volumes:

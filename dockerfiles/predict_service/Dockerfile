@@ -9,8 +9,7 @@ WORKDIR /home/annual-main-project
 
 COPY . .
 
-RUN cp dwh_def_user.pickle src/databases/ \
-&& apt-get update \
+RUN  apt-get update \
 && pip install --upgrade pip \
 && pip install --no-cache-dir -r requirements.txt
 
