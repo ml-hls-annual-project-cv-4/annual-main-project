@@ -31,7 +31,7 @@ class ReqImitation:
         pass
 
     def choose_random_image(self):
-        random_img_number = random.randint(0, len(os.listdir(self.images_folder)))
+        random_img_number = random.randint(0, len(os.listdir(self.images_folder)) - 1)
         return os.listdir(self.images_folder)[random_img_number]
 
     def make_reuqest(self, img_name):
