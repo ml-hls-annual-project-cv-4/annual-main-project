@@ -7,8 +7,11 @@ To make a prediction meaningful we should pass image with boxes coordinates or p
 Pipeline #1: The easiest way. Pass an image from the database with corresponding name. 
 Then we can get boxes coordinates from database
 ----------------------------------------
+from src.databases.dwh import DwhDb
+
 img_bgr_array = img_to_array(img_path)
-df_labels = dwh.select_db_labels(ls_names, tbl_name)
+df_labels = DwhDb().select_by_imgname(ls_names, tbl_name)
+
 prediction = (
     df_labels[lambda df: np.invert(df.box2d_x1.isna())]
         .apply(lambda df: img_cut_box(img_bgr_array, df.box2d_x1, df.box2d_y1, df.box2d_x2, df.box2d_y2), 
@@ -41,7 +44,6 @@ prediction = make_pred_hog_vc(hog_vc)
 
 import cv2
 import numpy as np
-import src.databases.dwh as dwh
 import pickle
 from skimage.feature import hog
 import lightgbm

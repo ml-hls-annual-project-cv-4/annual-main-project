@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.abspath("../databases/"))
-import dwh
+from src.databases.dwh import DwhDb
 import pandas as pd
 import numpy as np
 from skimage.feature import hog
@@ -12,20 +12,11 @@ hog_version = ''
 img_per_ls = 50
 
 def create_table(table_name):
-    with dwh.def_client() as client:
-        client.execute(
-            'use cv_project'    
-        )
-        tables_list = client.execute(
-            'show tables'
-        )
+    tables_list = DwhDb().show_tables()
         
     if table_name not in tables_list:
-        with dwh.def_client() as client:
-            client.execute(
-                'use cv_project'
-            )
-            client.execute(
+        with DwhDb().def_client() as client:
+            client.command(
                 f'create table {table_name} ('
                     'name String,'
                     'weather String,'
@@ -42,10 +33,14 @@ def create_table(table_name):
         print('Table already exists')
 
 def get_img_names_lists(tbl_boxes, tbl_hog, img_per_ls):
-    with dwh.def_client() as client:
-        ls_names = client.query_dataframe(f"select distinct name from {tbl_boxes}")['name'].tolist()
-    with dwh.def_client() as client:
-        ls_hog_names = client.query_dataframe(f"select distinct name from {tbl_hog}")
+    with DwhDb().def_client() as client:
+        ls_names = client.query_df(
+            "select distinct name from {tbl_boxes: Identifier}",
+            parameters={'tbl_boxes': tbl_boxes})['name'].tolist()
+    with DwhDb().def_client() as client:
+        ls_hog_names = client.query_df(
+            "select distinct name from {tbl_hog: Identifier}",
+            parameters={'tbl_hog': tbl_hog})
     if ls_hog_names.shape[0] != 0:
         ls_names = [i for i in ls_names if i not in ls_hog_names['name'].tolist()]
     res_ls = []
@@ -56,12 +51,7 @@ def get_img_names_lists(tbl_boxes, tbl_hog, img_per_ls):
     return res_ls
 
 def select_db_boxes(ls_names, tbl_boxes):
-    str_names = ', '.join([f"'{i}'" for i in ls_names])
-    with dwh.def_client() as client:
-        df = client.query_dataframe(
-            f"select * from {tbl_boxes} where name in ({str_names})"
-        )
-    return df
+    return DwhDb().select_by_imgname(ls_names, tbl_boxes)
 
 def calc_hog(ls_img, width, height):
     if min(width, height) < 32:
@@ -83,9 +73,9 @@ def write_hog_batch(ls_img_names_batch):
                                'box2d_y1', 'box2d_x2', 'box2d_y2'], axis = 1))
     df_boxes['hog'] = df_boxes.apply(lambda x: calc_hog(ls_img=x.ls_box_img, width=x.width, height=x.height), axis=1)
     df_boxes.drop(['ls_box_img'], axis=1, inplace=True)
-    with dwh.def_client() as client:
-        client.insert_dataframe(f'insert into hog{hog_version}_{data_batch} values', df_boxes)
-
+    with DwhDb().def_client() as client:
+        client.insert_dataframe(f'hog{hog_version}_{data_batch}', df_boxes)
+            
 for data_batch in ['train', 'val']:
     create_table(f'hog{hog_version}_{data_batch}')
     ls_names = get_img_names_lists(f'boxes_{data_batch}', f'hog{hog_version}_{data_batch}', img_per_ls)
