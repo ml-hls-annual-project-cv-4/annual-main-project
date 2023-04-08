@@ -4,22 +4,22 @@ services:
   predict_service:
     container_name: predict_service
     build: 
-     context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/predict_service
+     context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#app_improv:dockerfiles/predict_service
      args:
       BRANCH: app_improv  
+    ports:
+      - 80:80
     networks:
       - app_net
 
   requests_imitation:
     container_name: requests_imitation
     build: 
-      context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/requests_imitation
+      context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#app_improv:dockerfiles/requests_imitation
       args:
        BRANCH: app_improv
     networks:
       - app_net
-    volumes:
-      - ../../datasets/images/train:/home/annual-main-project/datasets/images/train
 
   prometheus:
     container_name: prometheus
