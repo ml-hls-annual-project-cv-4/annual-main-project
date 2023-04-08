@@ -65,7 +65,7 @@ class ReqImitation:
 
 
 if __name__ == '__main__':
-    reqs = ReqImitation(requests_number=15, sleep_time=5,
+    reqs = ReqImitation(requests_number=5, sleep_time=5,
                         images_folder='dataset/images/', 
                         predict_service_host = 'http://predict_service:80')
 
