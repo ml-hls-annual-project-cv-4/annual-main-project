@@ -8,7 +8,7 @@ from multiprocessing import Pool
 class ReqImitation:
 
     def __init__(self, requests_number, sleep_time, 
-                 images_folder='datasets/images/train/', 
+                 images_folder='dataset/images/', 
                  predict_service_host = 'http://predict_service:80'):
         self.requests_number = requests_number
         self.sleep_time = sleep_time
@@ -37,9 +37,9 @@ class ReqImitation:
     def make_reuqest(self, img_name):
         '''
         Function sends POST request to predict_service. 
-        Images stored in datasets/images/train/ directory thus it should mounted to docker
+        Images stored in dataset/images/ directory thus it should mounted to docker
         '''
-        file = {'selectedFile': open(f'datasets/images/train/{img_name}', 'rb')}
+        file = {'selectedFile': open(f'dataset/images/{img_name}', 'rb')}
                     
         response=requests.request(
             'POST', 
