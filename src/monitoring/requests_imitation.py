@@ -52,7 +52,7 @@ class ReqImitation:
         '''
         Function sends random number of parallel requests then sleeps random seconds
         '''
-        requests_number = np.max(1, self.gen_requests_number())
+        requests_number = np.max([1, self.gen_requests_number()])
         images = [self.choose_random_image() for i in range(requests_number)]
 
         with Pool(requests_number) as pool:
@@ -65,9 +65,20 @@ class ReqImitation:
 
 
 if __name__ == '__main__':
+    for _ in range(10):
+        try:
+            resp = requests.request('GET', 'http://predict_service:80/docs')
+            if resp.status_code == 200:
+                break
+        except:
+            time.sleep(5)
+        
     reqs = ReqImitation(requests_number=15, sleep_time=5,
                         images_folder='dataset/images/', 
                         predict_service_host = 'http://predict_service:80')
 
     while True:
         reqs.make_parallel_requests()
+
+
+
