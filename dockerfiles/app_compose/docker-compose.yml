@@ -18,10 +18,15 @@ services:
       context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/requests_imitation
       args:
        BRANCH: develop
+    depends_on:
+      predict_service:
+        condition: service_started
     networks:
       - app_net
 
   prometheus:
+    depends_on:
+      - predict_service
     container_name: prometheus
     image: bitnami/prometheus
     ports:
