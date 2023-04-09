@@ -65,9 +65,18 @@ class ReqImitation:
 
 
 if __name__ == '__main__':
+    for _ in range(10):
+        resp = requests.request('GET', 'http://predict_service:80/docs')
+        if resp.status_code == 200:
+            break
+        time.sleep(5)
+        
     reqs = ReqImitation(requests_number=15, sleep_time=5,
                         images_folder='dataset/images/', 
                         predict_service_host = 'http://predict_service:80')
 
     while True:
         reqs.make_parallel_requests()
+
+
+
