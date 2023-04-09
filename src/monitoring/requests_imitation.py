@@ -64,25 +64,6 @@ class ReqImitation:
     pass
 
 
-# !!!!
-import time
-
-page = ''
-while page == '':
-    try:
-        page = requests.get('http://predict_service:80')
-        break
-    except:
-        print("Connection refused by the server..")
-        print("Let me sleep for 5 seconds")
-        print("ZZzzzz...")
-        time.sleep(5)
-        print("Was a nice sleep, now let me continue...")
-        continue
-    
-#!!!!!!
-
-
 if __name__ == '__main__':
     reqs = ReqImitation(requests_number=15, sleep_time=5,
                         images_folder='dataset/images/', 
