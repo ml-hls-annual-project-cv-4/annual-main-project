@@ -19,7 +19,7 @@ docker build --build-arg BRANCH=fastapi_temp --no-cache -t predict_service .
 It's necessary to mount folder with images from train dataset
 
 ```shell
-docker run -d --rm --name requests_imitation -v /home/annual-main-project/datasets/images/train/:/home/annual-main-project/datasets/images/train/ requests_imitation
+docker run -d --rm --name requests_imitation -v /home/annual-main-project/dataset/images/:/home/annual-main-project/datasets/images/train/ requests_imitation
 ```
 
 #### Environment Variables
