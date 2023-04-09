@@ -52,7 +52,7 @@ class ReqImitation:
         '''
         Function sends random number of parallel requests then sleeps random seconds
         '''
-        requests_number = np.max(1, self.gen_requests_number())
+        requests_number = np.max([1, self.gen_requests_number()])
         images = [self.choose_random_image() for i in range(requests_number)]
 
         with Pool(requests_number) as pool:
