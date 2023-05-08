@@ -1,25 +1,16 @@
 import os
 import sys
-sys.path.append(os.path.abspath("../databases/"))
-import src.databases.dwh as dwh
+from src.databases.dwh import DwhDb
 import numpy as np
 import pandas as pd
 from multiprocessing import Pool, cpu_count
 
 def create_table(tblname):
-    with dwh.def_client() as client:
-        client.execute(
-            'use cv_project'    
-        )
-        tables_list = client.execute(
-            'show tables'
-        )
+    tables_list = DwhDb().show_tables()
+    
     if tblname not in tables_list:
-        with dwh.def_client() as client:
-            client.execute(
-                'use cv_project'
-            )
-            client.execute(
+        with DwhDb().def_client() as client:
+            client.command(
                 f'create table {tblname} ('
                     'name String,'
                     'weather String,'
@@ -46,34 +37,25 @@ def create_table(tblname):
         print('Table already exists')
 
 def get_img_names_lists(tbl_images, tbl_boxes, img_per_ls):
-    with dwh.def_client() as client:
-        ls_names = client.query_dataframe(f"select distinct name from {tbl_images}")['name'].tolist()
-    with dwh.def_client() as client:
-        df_boxes = client.query_dataframe(f"select distinct name from {tbl_boxes}")
+    with DwhDb().def_client() as client:
+        ls_names = client.query_df(
+            "select distinct name from {tbl_images: Identifier}",
+            parameters={'tbl_images': tbl_images})['name'].tolist()
+        
+    with DwhDb().def_client() as client:
+        df_boxes = client.query_df(
+            "select distinct name from {tbl_boxes: Identifier}",
+            parameters={'tbl_boxes': tbl_boxes})
+        
     if df_boxes.shape[0] != 0:
         ls_names = [i for i in ls_names if i not in df_boxes['name'].tolist()]
+        
     res_ls = []
     ls_start = 0
     for i in range(len(ls_names) // img_per_ls + min(1, len(ls_names) % img_per_ls)):
         res_ls.append(ls_names[ls_start:min(ls_start + img_per_ls, len(ls_names))])
         ls_start += img_per_ls
     return res_ls
-
-def select_db_images(ls_names, tbl_name):
-    str_names = ', '.join([f"'{i}'" for i in ls_names])
-    with dwh.def_client() as client:
-        df = client.query_dataframe(
-            f"select * from {tbl_name} where name in ({str_names})"
-        )
-    return df
-
-def select_db_labels(ls_names, tbl_name):
-    str_names = ', '.join([f"'{i}'" for i in ls_names])
-    with dwh.def_client() as client:
-        df = client.query_dataframe(
-            f"select * from {tbl_name} where name in ({str_names})"
-        )
-    return df
 
 def cut_box_from_image(df_images, image_name, x1, y1, x2, y2):
     ls_image = df_images[lambda x: x.name == image_name]['img_bgr_row'].tolist()
@@ -82,14 +64,14 @@ def cut_box_from_image(df_images, image_name, x1, y1, x2, y2):
     return ls_box
 
 def write_boxes_batch(ls_names_batch):
-    df_images = select_db_images(ls_names_batch, f'images_{data_batch}')
-    df_labels = select_db_labels(ls_names_batch, f'labels_{data_batch}')
+    df_images = DwhDb().select_by_imgname(ls_names_batch, f'images_{data_batch}')
+    df_labels = DwhDb().select_by_imgname(ls_names_batch, f'labels_{data_batch}')
     df_labels = df_labels[[not i for i in pd.isna(df_labels['box2d_x1'])]].iloc[:, 0:16]
     df_labels['ls_box_img'] = df_labels.apply(
         lambda x: cut_box_from_image(df_images, x['name'], x.box2d_x1, x.box2d_y1, x.box2d_x2, x.box2d_y2),
         axis = 1)
-    with dwh.def_client() as client:
-        client.insert_dataframe(f'insert into boxes_{data_batch} values', df_labels)
+    with DwhDb().def_client() as client:
+        client.insert_dataframe(f'boxes_{data_batch}', df_labels)
 
 for data_batch in ['train', 'val']:
     create_table(f'boxes_{data_batch}')

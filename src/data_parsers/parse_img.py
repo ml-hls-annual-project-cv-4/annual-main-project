@@ -5,24 +5,15 @@ from multiprocessing import Pool, cpu_count
 import cv2
 import pandas as pd
 
-import src.databases.dwh as dwh
+from src.databases.dwh import DwhDb
 
 
 def create_table(tblname):
-    with dwh.def_client() as client:
-        client.execute(
-            'use cv_project'
-        )
-        tables_list = client.execute(
-            'show tables'
-        )
+    tables_list = DwhDb().show_tables()
 
     if tblname not in tables_list:
-        with dwh.def_client() as client:
-            client.execute(
-                'use cv_project'
-            )
-            client.execute(
+        with DwhDb().def_client() as client:
+            client.command(
                 f'create table {tblname} ('
                 'name String,'
                 'row_number Int32,'
@@ -36,8 +27,8 @@ def create_table(tblname):
 
 
 def prep_img_names(tbl_images, data_batch, img_per_ls):
-    with dwh.def_client() as client:
-        df_db_images = client.query_dataframe(f"select distinct name from {tbl_images}")
+    with DwhDb().def_client() as client:
+        df_db_images = client.query_df(f"select distinct name from {tbl_images}")
     ls_imgfiles_names = os.listdir(f'datasets/images/{data_batch}/')
     if df_db_images.shape[0] != 0:
         ls_imgfiles_names = [i for i in ls_imgfiles_names if i not in df_db_images['name'].tolist()]
@@ -58,8 +49,8 @@ def parse_img(img_name, data_batch):
 
 
 def write_img_batch(img_names_batch):
-    with dwh.def_client() as client:
-        client.insert_dataframe(f'insert into {tbl_name} values',
+    with DwhDb().def_client() as client:
+        client.insert_dataframe(tbl_name,
                                 reduce(lambda x, y: pd.concat([x, y]),
                                        map(lambda x: parse_img(x, data_batch=data_batch), img_names_batch)))
 

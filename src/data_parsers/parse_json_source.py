@@ -3,7 +3,7 @@ import pandas as pd
 import sys 
 import os
 sys.path.append(os.path.abspath("../databases/"))
-import src.databases.dwh as dwh
+from src.databases.dwh import DwhDb
         
 def parse_one_img (obj_to_parse):
     '''Func that parse piece of json corresponded to one img'''        
@@ -36,20 +36,11 @@ def parse_one_img (obj_to_parse):
     return df
 
 def create_table(tblname):
-    with dwh.def_client() as client:
-        client.execute(
-            'use cv_project'    
-        )
-        tables_list = client.execute(
-            'show tables'
-        )
+    tables_list = DwhDb().show_tables()
         
     if tblname not in tables_list:
-        with dwh.def_client() as client:
-            client.execute(
-                'use cv_project'
-            )
-            client.execute(
+        with DwhDb().def_client() as client:
+            client.command(
                 f'create table {tblname} ('
                     'name String,'
                     'weather String,'
@@ -102,9 +93,8 @@ for tblname, filename in [
                     if brackets_counter == 0:
                         obj_to_parse += sym
                         df = parse_one_img(obj_to_parse)
-                        dwh.insert_dataframe(dbname='cv_project',
-                                             tblname=tblname,
-                                             df=df)
+                        DwhDb().insert_dataframe(tblname,
+                                               df=df)
                         obj_to_parse=''
                         mode='start'
                 if mode == 'collect':
