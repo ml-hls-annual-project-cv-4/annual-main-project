@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 
-from src.data_access_layer.contracts.data_services.train_data_service import AbstractTrainDataService
+from src.data_access_layer.contracts.data_services.dataset_loader import AbstractionDatasetLoader
 
 
-class TrainDataService(AbstractTrainDataService):
+class TrainDataService(AbstractionDatasetLoader):
     __client = None
 
     def __init__(self, client):
