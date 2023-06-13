@@ -23,6 +23,7 @@ jobs:
           pip install pytest-cov
           pip install opencv-python-headless
           pip install scikit-image
+          pip install lightgbm
           pip install -r api/requirements.txt
       - name: Running tests
         run: |
