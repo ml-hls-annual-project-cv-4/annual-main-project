@@ -73,5 +73,5 @@ jobs:
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
         docker tag requests_imitation $IMAGE_ID:$VERSION
-        docker push requests_imitation
+        docker push $IMAGE_ID:$VERSION
         
