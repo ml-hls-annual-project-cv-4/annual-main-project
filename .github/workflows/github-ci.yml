@@ -60,7 +60,7 @@ jobs:
           # This is where you will update the personal access token to GITHUB_TOKEN
       run: |
         #echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u max-kovalenko --password-stdin
-        echo 'mzfka' | docker login ghcr.io -u max-kovalenko --password-stdin
+        echo '' | docker login ghcr.io -u max-kovalenko --password-stdin
 #     - name: Push image
 #       run: |
 #         docker push requests_imitation        
