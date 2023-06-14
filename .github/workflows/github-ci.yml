@@ -33,30 +33,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Build pred_service image
-      run: |
-        cd dockerfiles/predict_service/
-        docker build -t predict_service .
     - name: Log in to registry
           # This is where you will update the personal access token to GITHUB_TOKEN
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-    - name: Push image
-      run: |
-        docker push predict_service
+#     - name: Build pred_service image
+#       run: |
+#         cd dockerfiles/predict_service/
+#         docker build -t predict_service .
+#     - name: Log in to registry
+#           # This is where you will update the personal access token to GITHUB_TOKEN
+#       run: |
+#         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+#     - name: Push image
+#       run: |
+#         docker push predict_service
         
-  building-requests-imitation:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build pred_service image
-      run: |
-        cd dockerfiles/requests_imitation
-        docker build -t requests_imitation .
-    - name: Log in to registry
-          # This is where you will update the personal access token to GITHUB_TOKEN
-      run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-    - name: Push image
-      run: |
-        docker push requests_imitation        
+#   building-requests-imitation:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Build pred_service image
+#       run: |
+#         cd dockerfiles/requests_imitation
+#         docker build -t requests_imitation .
+#     - name: Log in to registry
+#           # This is where you will update the personal access token to GITHUB_TOKEN
+#       run: |
+#         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+#     - name: Push image
+#       run: |
+#         docker push requests_imitation        
