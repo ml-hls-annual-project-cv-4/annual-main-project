@@ -57,10 +57,8 @@ jobs:
         cd dockerfiles/requests_imitation
         docker build -t requests_imitation .
     - name: Log in to registry
-          # This is where you will update the personal access token to GITHUB_TOKEN
       run: |
-        #echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u max-kovalenko --password-stdin
-        echo "${{ secrets.TESTSECRET }}" | docker login ghcr.io -u max-kovalenko --password-stdin
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u max-kovalenko --password-stdin
     - name: Push image
       run: |
         docker push requests_imitation        
