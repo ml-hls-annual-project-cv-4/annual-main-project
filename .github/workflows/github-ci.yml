@@ -28,3 +28,12 @@ jobs:
       - name: Running tests
         run: |
           PYTHONPATH=src python3 -m pytest --cov src tests        
+
+  building-images:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build pred_service image
+      run: |
+        cd dockerfiles/predict_service/
+        docker build -t predict_service
