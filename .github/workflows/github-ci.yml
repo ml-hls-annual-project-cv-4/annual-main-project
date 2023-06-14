@@ -48,8 +48,8 @@ jobs:
   building-requests-imitation:
     runs-on: ubuntu-latest
     permissions:
-      packages: read|write
-      contents: read|write
+      packages: write
+      contents: write
     steps:
     - uses: actions/checkout@v3
     - name: Build pred_service image
