@@ -52,13 +52,13 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v3
-#     - name: Build pred_service image
-#       run: |
-#         cd dockerfiles/requests_imitation
-#         docker build -t requests_imitation .
+    - name: Build pred_service image
+      run: |
+        cd dockerfiles/requests_imitation
+        docker build -t requests_imitation .
     - name: Log in to registry
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u max-kovalenko --password-stdin ghcr.io
-#     - name: Push image
-#       run: |
-#         docker push requests_imitation        
+    - name: Push image
+      run: |
+        docker push requests_imitation        
