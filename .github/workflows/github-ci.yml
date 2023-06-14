@@ -36,4 +36,4 @@ jobs:
     - name: Build pred_service image
       run: |
         cd dockerfiles/predict_service/
-        docker build -t predict_service
+        docker build -t predict_service .
