@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+        
+  building-requests-imitation:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build pred_service image
+      run: |
+        cd dockerfiles/requests_imitation
+        docker build -t requests_imitation .
+        
+    - name: Log in to the Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Pulling image
+      # some comment smth again
+      run: |
+        docker pull ghcr.io/${{ github.actor }}/predict_service
+    
