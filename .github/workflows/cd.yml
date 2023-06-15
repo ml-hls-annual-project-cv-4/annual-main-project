@@ -27,5 +27,5 @@ jobs:
       # some comment smth again
       run: |
         VERSION='gh_workflow'
-        docker pull ghcr.io/${{ github.actor }}/predict_service:$VERSION
+        docker pull ghcr.io/${{ github.actor }}/predict_service:gh_workflow
     
