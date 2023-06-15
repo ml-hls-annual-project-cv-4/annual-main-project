@@ -26,5 +26,6 @@ jobs:
     - name: Pulling image
       # some comment smth again
       run: |
-        docker pull ghcr.io/${{ github.actor }}/predict_service
+        VERSION='gh_workflow'
+        docker pull ghcr.io/${{ github.actor }}/predict_service:$VERSION
     
