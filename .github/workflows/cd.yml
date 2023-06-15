@@ -28,4 +28,5 @@ jobs:
       run: |
         VERSION='gh_workflow'
         #docker pull ghcr.io/${{ github.actor }}/predict_service:gh_workflow
-        docker pull ghcr.io/ml-hls-annual-project-cv-4/predict_service:gh_workflow
+        echo {{ github.actor }}
+        #docker pull ghcr.io/ml-hls-annual-project-cv-4/predict_service:gh_workflow
