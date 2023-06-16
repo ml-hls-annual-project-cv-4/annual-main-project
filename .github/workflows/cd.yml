@@ -28,7 +28,7 @@ jobs:
       run: |
         echo ${{ secrets.SSH_USER_DEPLOYER }} #!!!!!
         ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/dockerfiles/app_compose && docker compose restart -d && exit"
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/dockerfiles/app_compose && docker compose down && docker compose pull && docker compose up -d && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
     
