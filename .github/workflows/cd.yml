@@ -24,7 +24,7 @@ jobs:
     - name: connect and pull
       run: |
         echo ${{ secrets.SSH_USER_DEPLOYER }} #!!!!!
-        ssh deployer@84.252.141.130 "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
+        ssh -i ~/.ssh/id_rsa deployer@84.252.141.130 "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
     
