@@ -36,7 +36,7 @@ jobs:
     
     - name: Build pred_service image
       run: |
-        cd dockerfiles/predict_service/
+        cp -r dockerfiles/predict_service/* .
         docker build -t predict_service .
         
     - name: Log in to the Container registry
@@ -53,7 +53,6 @@ jobs:
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
         [ "$VERSION" == "main" ] && VERSION=latest
-        #VERSION='gh_workflow'
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
         docker tag predict_service $IMAGE_ID:$VERSION
@@ -69,7 +68,7 @@ jobs:
     
     - name: Build req_imitation image
       run: |
-        cd dockerfiles/requests_imitation
+        cp -r dockerfiles/predict_service/* .
         docker build -t requests_imitation .
         
     - name: Log in to the Container registry
@@ -86,7 +85,6 @@ jobs:
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
         [ "$VERSION" == "main" ] && VERSION=latest
-        #VERSION='gh_workflow'
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
         docker tag requests_imitation $IMAGE_ID:$VERSION
