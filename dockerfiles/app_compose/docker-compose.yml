@@ -3,7 +3,7 @@ services:
 
   predict_service:
     container_name: predict_service
-    image: ghcr.io/ml-hls-annual-project-cv-4/predict_service:gh_workflow
+    image: ghcr.io/ml-hls-annual-project-cv-4/predict_service:develop
     #ports:
     #  - 80:80
     networks:
@@ -11,7 +11,7 @@ services:
 
   requests_imitation:
     container_name: requests_imitation
-    image: ghcr.io/ml-hls-annual-project-cv-4/requests_imitation:gh_workflow
+    image: ghcr.io/ml-hls-annual-project-cv-4/requests_imitation:develop
     depends_on:
       predict_service:
         condition: service_started
