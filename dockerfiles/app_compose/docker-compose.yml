@@ -3,10 +3,7 @@ services:
 
   predict_service:
     container_name: predict_service
-    build: 
-     context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/predict_service
-     args:
-      BRANCH: develop  
+    image: ghcr.io/ml-hls-annual-project-cv-4/predict_service:gh_workflow
     ports:
       - 80:80
     networks:
@@ -14,10 +11,7 @@ services:
 
   requests_imitation:
     container_name: requests_imitation
-    build: 
-      context: https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git#develop:dockerfiles/requests_imitation
-      args:
-       BRANCH: develop
+    image: ghcr.io/ml-hls-annual-project-cv-4/requests_imitation:gh_workflow
     depends_on:
       predict_service:
         condition: service_started
