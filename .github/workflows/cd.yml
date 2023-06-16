@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+        
+  deploying-app:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: install ssh keys
+      run: |
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PRIVATE_KEY_DEPLOYER }}" > ~/.ssh/id_rsa
+        eval $(ssh-agent -s)
+        ssh-add ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+        
+    - name: connect and pull
+      run: |
+        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
+        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io && cd ${{ secrets.WORK_DIR }}/dockerfiles/app_compose && docker compose down && docker compose pull && docker compose up -d && exit"
+    - name: cleanup
+      run: rm -rf ~/.ssh
+    

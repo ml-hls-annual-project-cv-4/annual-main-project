@@ -1,0 +1,6 @@
+scikit-learn
+numpy
+pandas
+clickhouse_driver
+opencv-python-headless
+scikit-image
