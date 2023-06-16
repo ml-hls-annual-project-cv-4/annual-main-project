@@ -27,7 +27,8 @@ jobs:
     - name: connect and pull
       run: |
         ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
-        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/dockerfiles/app_compose && docker compose down && docker compose pull && docker compose up -d && exit"
+        
+        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io && cd ${{ secrets.WORK_DIR }}/dockerfiles/app_compose && docker compose down && docker compose pull && docker compose up -d && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
     
