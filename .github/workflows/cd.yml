@@ -19,12 +19,12 @@ jobs:
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SSH_PRIVATE_KEY_DEPLOYER }}" > ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts    
+        ssh-keyscan -H 84.252.141.130 > ~/.ssh/known_hosts    
         echo ${{ secrets.SSH_HOST }} #!!!!!
     - name: connect and pull
       run: |
         echo ${{ secrets.SSH_USER_DEPLOYER }} #!!!!!
-        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
+        ssh deployer@84.252.141.130 "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
     
