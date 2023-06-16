@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+  predict_service:
+    container_name: predict_service
+    image: predict_service
+    ports:
+      - 80:80
+    networks:
+      - app_net
+
+  requests_imitation:
+    container_name: requests_imitation
+    image: requests_imitation
+    depends_on:
+      predict_service:
+        condition: service_started
+    networks:
+      - app_net
+
+  prometheus:
+    depends_on:
+      - predict_service
+    container_name: prometheus
+    image: bitnami/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app_net
+
+  node-exporter:
+    container_name: node-exporter
+    image: bitnami/node-exporter
+    networks:
+      - app_net
+
+networks:
+  app_net:
