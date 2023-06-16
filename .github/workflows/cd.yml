@@ -8,24 +8,20 @@ on:
 
 jobs:
         
-  test_pull_image:
+  deploying-app:
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
     steps:
     - uses: actions/checkout@v3
-        
-    - name: Log in to the Container registry
-      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Pulling image
-      # some comment smth again
+    - name: install ssh keys
       run: |
-        VERSION='gh_workflow'
-        docker pull ghcr.io/${{ github.repository_owner }}/predict_service:$VERSION
-  
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PRIVATE_KEY_DEPLOYER }}" > ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts    
+    - name: connect and pull
+      run: ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
+    - name: cleanup
+      run: rm -rf ~/.ssh
+    
