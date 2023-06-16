@@ -3,15 +3,15 @@ services:
 
   predict_service:
     container_name: predict_service
-    image: ghcr.io/ml-hls-annual-project-cv-4/predict_service:develop
-    #ports:
-    #  - 80:80
+    image: predict_service
+    ports:
+      - 80:80
     networks:
       - app_net
 
   requests_imitation:
     container_name: requests_imitation
-    image: ghcr.io/ml-hls-annual-project-cv-4/requests_imitation:develop
+    image: requests_imitation
     depends_on:
       predict_service:
         condition: service_started
@@ -23,8 +23,8 @@ services:
       - predict_service
     container_name: prometheus
     image: bitnami/prometheus
-    #ports:
-    #  - 9090:9090
+    ports:
+      - 9090:9090
     volumes:
       - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
