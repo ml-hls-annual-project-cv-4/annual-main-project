@@ -4,8 +4,8 @@ services:
   predict_service:
     container_name: predict_service
     image: ghcr.io/ml-hls-annual-project-cv-4/predict_service:gh_workflow
-    ports:
-      - 80:80
+    #ports:
+    #  - 80:80
     networks:
       - app_net
 
@@ -23,8 +23,8 @@ services:
       - predict_service
     container_name: prometheus
     image: bitnami/prometheus
-    ports:
-      - 9090:9090
+    #ports:
+    #  - 9090:9090
     volumes:
       - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
