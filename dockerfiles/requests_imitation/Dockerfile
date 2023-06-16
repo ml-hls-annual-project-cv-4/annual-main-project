@@ -1,11 +1,6 @@
 FROM python
 
-ARG BRANCH=develop
-
-RUN cd home/ \
-&& git clone -b $BRANCH https://github.com/ml-hls-annual-project-cv-4/annual-main-project.git
-
-WORKDIR /home/annual-main-project
+WORKDIR .
 
 COPY . .
 
