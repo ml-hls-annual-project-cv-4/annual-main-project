@@ -22,12 +22,13 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY_DEPLOYER }}" > ~/.ssh/id_rsa
         eval $(ssh-agent -s)
         ssh-add ~/.ssh/id_rsa
-        ssh-keyscan -H 84.252.141.130 > ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
         
     - name: connect and pull
       run: |
         echo ${{ secrets.SSH_USER_DEPLOYER }} #!!!!!
-        ssh -i ~/.ssh/id_rsa deployer@84.252.141.130 "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull origin && exit"
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }}/dockerfiles/app_compose && docker compose restart -d && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
     
