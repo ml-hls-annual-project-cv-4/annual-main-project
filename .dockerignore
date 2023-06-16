@@ -1,0 +1,9 @@
+.github
+*cache*/
+.vscode
+datasets
+docs
+env
+some_pickles
+tests
+.coverage
