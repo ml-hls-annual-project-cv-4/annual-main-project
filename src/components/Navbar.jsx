@@ -6,10 +6,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 function Navbar1() {
   return (
-    <div className='left-20 absolute top-3 w-4/5 mx-auto'>
+    <div className='fixed top-3 mx-auto'>
     <Navbar bg="light" expand="md" className='rounded-xl'>  
     <Container>  
-      <Navbar.Brand href="#home">CV-Cars-4</Navbar.Brand>  
+      <Navbar.Brand href="/">CV-Cars-4</Navbar.Brand>  
       <Navbar.Toggle aria-controls="basic-navbar-nav" />  
       <Navbar.Collapse id="basic-navbar-nav">  
         <Nav className="me-auto">  
