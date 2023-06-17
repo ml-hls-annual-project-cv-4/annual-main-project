@@ -4,8 +4,8 @@ services:
   predict_service:
     container_name: predict_service
     image: ghcr.io/ml-hls-annual-project-cv-4/predict_service:develop
-    #ports:
-    #  - 80:80
+    ports:
+      - 3000:3000
     networks:
       - app_net
 
