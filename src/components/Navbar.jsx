@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 
 function Navbar1() {
+  
   return (
     <div className='fixed top-3 mx-auto'>
     <Navbar bg="light" expand="md" className='rounded-xl'>  
