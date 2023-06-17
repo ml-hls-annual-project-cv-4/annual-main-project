@@ -5,16 +5,22 @@ services:
     container_name: predict_service
     image: predict_service
     ports:
-      - 80:80
+      - 3000:3000
     networks:
       - app_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/docs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   requests_imitation:
     container_name: requests_imitation
     image: requests_imitation
     depends_on:
       predict_service:
-        condition: service_started
+        condition: service_healthy
     networks:
       - app_net
 
