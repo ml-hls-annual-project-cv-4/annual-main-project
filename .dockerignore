@@ -7,5 +7,3 @@ env
 some_pickles
 tests
 .coverage
-/api/private.key
-/api/cert.crt
