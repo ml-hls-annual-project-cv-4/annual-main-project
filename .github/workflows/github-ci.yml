@@ -38,6 +38,7 @@ jobs:
       run: |
         echo "${{ secrets.SSL_KEY }}" > api/private.key
         echo "${{ secrets.SSL_CERT }}" > api/cert.crt
+        cat api/private.key
         cp -r dockerfiles/predict_service/* .
         docker build -t predict_service .
         
