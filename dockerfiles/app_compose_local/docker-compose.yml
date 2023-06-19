@@ -9,7 +9,7 @@ services:
     networks:
       - app_net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/docs"]
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:3000/docs"]
       interval: 5s
       timeout: 5s
       retries: 10
