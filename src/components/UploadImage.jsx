@@ -54,12 +54,13 @@ export const ImageUpload = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center h-screen">
-      <div className="flex flex-col items-center justify-center bg-slate-300 bg-opacity-40 rounded-xl p-4">
+    <div className="flex flex-col h-screen items-center justify-center">
+    <form onSubmit={handleSubmit} className="">
+      <div className="bg-slate-300 bg-opacity-40 rounded-xl p-4 place-items-center flex flex-col">
         <input
           type="file"
           onChange={onSelectFile}
-          className="mb-10 text-sm text-grey-500
+          className="mb-2 text-sm text-grey-500
             file:py-2 file:px-6
             file:rounded-full file:border-0
             file:text-lg file:font-medium
@@ -69,21 +70,20 @@ export const ImageUpload = () => {
           "
         />
         {selectedFile && 
-        <div className="w-2/4">
-        <img className="object-scale-down" src={preview} />
-        </div>}
+        <img className="h-auto max-h-96 max-w-full" src={preview} />
+        }
 
         {selectedFile ? (
           <input
             type="submit"
-            className="mt-4 mb-10 text-grey-500
+            className="mt-3 text-grey-500
             py-2 px-6
             rounded-full border-0
             text-lg font-medium
             bg-blue-50 text-blue-700
             hover:cursor-pointer hover:bg-amber-50
             hover:text-amber-700"
-            value="Submit"
+            value="Отправить"
           />
         ) : (
           <label></label>
@@ -115,8 +115,9 @@ export const ImageUpload = () => {
         ) : (
           <></>
         )}
-        {prediction ? <><h1 className="text-white text-4xl text-center">Предсказание: {prediction}</h1></> : <></>}
+        {prediction ? <><h1 className="my-2 text-white text-4xl text-center">Предсказание: {prediction}</h1></> : <></>}
       </div>
     </form>
+    </div>
   );
 };
