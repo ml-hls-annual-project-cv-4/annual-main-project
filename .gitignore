@@ -285,3 +285,6 @@ poetry.toml
 # Credentials
 # dwh
 *dwh_def_user.pickle
+
+/api/private.key
+/api/cert.crt
