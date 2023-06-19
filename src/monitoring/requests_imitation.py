@@ -9,7 +9,7 @@ class ReqImitation:
 
     def __init__(self, requests_number, sleep_time, 
                  images_folder='dataset/images/', 
-                 predict_service_host = 'http://predict_service:80'):
+                 predict_service_host = 'https://predict_service:3000'):
         self.requests_number = requests_number
         self.sleep_time = sleep_time
         self.images_folder = images_folder
@@ -44,7 +44,8 @@ class ReqImitation:
         response=requests.request(
             'POST', 
             url=f'{self.predict_service_host}/uploadfile/',
-            files=file)
+            files=file,
+            verify=False)
         
         return response.status_code
 
@@ -68,7 +69,7 @@ if __name__ == '__main__':
             
     reqs = ReqImitation(requests_number=15, sleep_time=5,
                         images_folder='dataset/images/', 
-                        predict_service_host = 'http://predict_service:3000')
+                        predict_service_host = 'https://predict_service:3000')
 
     while True:
         reqs.make_parallel_requests()
