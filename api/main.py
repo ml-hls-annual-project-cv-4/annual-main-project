@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from src.features_extraction_algorithms.hog_algorithm import HogPredict
 
-app = FastAPI()
+app = FastAPI(ssl_keyfile="/api/private.key", ssl_certfile="/api/cert.crt")
 
 
 origins = [
