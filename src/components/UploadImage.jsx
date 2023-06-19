@@ -41,7 +41,7 @@ export const ImageUpload = () => {
       setResult(true);
       await axios({
         method: "post",
-        url: "http://84.252.141.130:3000/uploadfile/",
+        url: "https://annualcv.ru:3000/uploadfile/",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
