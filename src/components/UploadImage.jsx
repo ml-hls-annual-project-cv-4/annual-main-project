@@ -46,10 +46,12 @@ export const ImageUpload = () => {
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
         setResult(false);
-        setPrediction(response.data);
+        setPrediction("Предсказание: " + response.data);
       });
     } catch (error) {
       console.log(error);
+      setResult(false);
+      setPrediction("Ошибка, возможно выбран неправильный формат файла")
     }
   };
 
@@ -115,7 +117,7 @@ export const ImageUpload = () => {
         ) : (
           <></>
         )}
-        {prediction ? <><h1 className="my-2 text-white text-4xl text-center">Предсказание: {prediction}</h1></> : <></>}
+        {prediction ? <><h1 className="my-2 text-white text-4xl text-center">{prediction}</h1></> : <></>}
       </div>
     </form>
     </div>
