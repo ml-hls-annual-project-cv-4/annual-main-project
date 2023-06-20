@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from src.data_access_layer.contracts.data_services.train_data_service import AbstractTrainDataService
+from src.contracts.data_access_layer.train_data_service import AbstractTrainDataService
 
 
 class TrainDataService(AbstractTrainDataService):
