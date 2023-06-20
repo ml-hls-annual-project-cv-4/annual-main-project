@@ -37,8 +37,8 @@ class DLLManagerLoggingDecorator(DLLoggingDecoratorAbstract):
 
             sys.stdout = old_stdout
         except Exception as ex:
-            logging.info("Retrain failed")
             logging.exception(ex.__class__.__name__, exc_info=True)
+            logging.info("Retrain failed")
 
     def reset_and_train(self, dataset):
         try:
@@ -58,8 +58,8 @@ class DLLManagerLoggingDecorator(DLLoggingDecoratorAbstract):
             sys.stdout = old_stdout
 
         except Exception as ex:
-            logging.info("Reset and train failed")
             logging.exception(ex.__class__.__name__, exc_info=True)
+            logging.info("Reset and train failed")
 
     def predict(self, image):
 
@@ -82,5 +82,5 @@ class DLLManagerLoggingDecorator(DLLoggingDecoratorAbstract):
             return pred
 
         except Exception as ex:
-            self.__logger.info("Prediction failed")
             self.__logger.exception(ex.__class__.__name__)
+            self.__logger.info("Prediction failed")
