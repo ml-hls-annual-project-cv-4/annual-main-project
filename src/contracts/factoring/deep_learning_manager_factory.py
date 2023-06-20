@@ -7,7 +7,7 @@ class DLManagerFactory(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_image_prep_decorator(dl_manager: DLModelManagerAbstract) -> DLModelManagerAbstract:
+    def get_data_preparator(dl_manager: DLModelManagerAbstract) -> DLModelManagerAbstract:
         pass
 
     @staticmethod
