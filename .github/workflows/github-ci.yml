@@ -21,10 +21,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest-cov
-          pip install opencv-python-headless
-          pip install scikit-image
-          pip install lightgbm
-          pip install -r api/requirements.txt
+          pip install -r dockerfiles/predict_service/requirements.txt
       - name: Running tests
         run: |
           PYTHONPATH=src python3 -m pytest --cov src tests        
