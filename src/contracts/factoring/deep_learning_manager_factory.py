@@ -17,10 +17,10 @@ class DLManagerFactory(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_dl_manager() -> DLModelManagerAbstract:
+    def get_dl_manager(model_path: str, config: dict) -> DLModelManagerAbstract:
         pass
 
     @staticmethod
     @abstractmethod
-    def get_final_dl_manager() -> DLModelManagerAbstract:
+    def get_final_dl_manager(model_path: str, config: dict) -> DLModelManagerAbstract:
         pass

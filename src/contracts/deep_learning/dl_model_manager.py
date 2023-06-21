@@ -8,6 +8,10 @@ class DLModelManagerAbstract(ABC):
         pass
 
     @abstractmethod
+    def train(self, config_path: str, hyperparams: dict):
+        pass
+
+    @abstractmethod
     def retrain(self, image, annotation):
         pass
 

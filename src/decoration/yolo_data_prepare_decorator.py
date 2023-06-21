@@ -25,6 +25,9 @@ class YoloDataPrepareDecorator(DLPrepDataDecoratorAbstract):
         b, g, r = image.split()
         return Image.merge("RGB", (r, g, b))
 
+    def train(self, config_path: str, hyperparams: dict):
+        self.dl_manager.train(config_path, hyperparams)
+
     def predict(self, image):
 
         image_src_type = type(image)

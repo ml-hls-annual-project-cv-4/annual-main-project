@@ -6,6 +6,7 @@ from src.contracts.deep_learning.dl_model_manager import DLModelManagerAbstract
 
 
 class DLLManagerLoggingDecorator(DLLoggingDecoratorAbstract):
+
     def __init__(self, dl_manager: DLModelManagerAbstract, log_path):
         super().__init__(dl_manager)
 
@@ -19,6 +20,26 @@ class DLLManagerLoggingDecorator(DLLoggingDecoratorAbstract):
         logger.addHandler(logging.StreamHandler(sys.stdout))
 
         self.__logger = logger
+
+    def train(self, config_path: str, hyperparams: dict):
+        try:
+            self.__logger.info("Train start")
+
+            log = open(self.__log_path, 'a')
+
+            old_stdout = sys.stdout
+            sys.stdout = log
+
+            self.dl_manager.train(config_path, hyperparams)
+
+            log.close()
+
+            self.__logger.info("Train succeeded")
+
+            sys.stdout = old_stdout
+        except Exception as ex:
+            logging.exception(ex.__class__.__name__, exc_info=True)
+            logging.info("Train failed")
 
     def retrain(self, image, annotation):
         try:

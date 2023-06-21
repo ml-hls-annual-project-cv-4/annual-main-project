@@ -10,6 +10,10 @@ class DLPrepDataDecoratorAbstract(DLDecoratorAbstract):
         super().__init__(dl_manager)
 
     @abstractmethod
+    def train(self, config_path: str, hyperparams: dict):
+        pass
+
+    @abstractmethod
     def predict(self, image):
         pass
 
