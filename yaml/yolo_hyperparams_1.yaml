@@ -1,0 +1,8 @@
+epochs: 50
+batch: 16
+save: True
+save_period: 10
+exist_ok: False
+verbose: True
+device: cpu
+pretrained: False

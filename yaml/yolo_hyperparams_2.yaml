@@ -1,0 +1,12 @@
+imgsz: [1280, 720]
+epochs: 50
+batch: 16
+optimizer: "Adam"
+lr0: 1e-3
+save: True
+save_period: 10
+exist_ok: False
+verbose: True
+seed: 42
+device: 0
+pretrained: False
