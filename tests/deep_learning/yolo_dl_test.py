@@ -4,17 +4,12 @@ from PIL import Image
 
 from src.deep_learning.yolo_model_manager import YoloModelManager
 
-images_path = os.path.join("..", "..", "dataset", "images")
-model_path = os.path.join("..", "..", "models", "detection_model.onnx")
+images_path = os.path.join("dataset", "images")
+model_path = os.path.join("models", "detection_model.onnx")
 
 
 def get_images():
-    files = os.listdir(images_path)
-    for file in files:
-        if not (file.endswith(".jpg")):
-            files.remove(file)
-
-    return files
+    return [file for file in os.listdir(images_path) if file.endswith(".jpg")]
 
 
 def test_detect_objects_in_one_image_without_errors():
