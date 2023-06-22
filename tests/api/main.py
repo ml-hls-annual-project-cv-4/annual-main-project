@@ -2,7 +2,6 @@ import io
 import zipfile
 from os import path
 
-import cv2
 import uvicorn
 from fastapi import FastAPI, UploadFile
 from starlette.responses import StreamingResponse
