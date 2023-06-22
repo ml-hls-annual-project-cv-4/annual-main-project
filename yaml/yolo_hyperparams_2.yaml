@@ -1,12 +1,23 @@
-imgsz: [1280, 720]
 epochs: 50
 batch: 16
-optimizer: "Adam"
-lr0: 1e-3
+device: 0
+workers: 4
 save: True
 save_period: 10
+imgsz: [1280, 720]
 exist_ok: False
+optimizer: SGD
+lr0: 0.01
+momentum: 0.75
+project: yolov8-objects-detection
+name: detection-objects-exp-2
+amp: True
+seed: 777
 verbose: True
-seed: 42
-device: 0
-pretrained: False
+hsv_h: 0.015
+fliplr: 0.4
+mixup: 0.36
+copy_paste: 0.25
+shear: 0.25
+cache: False
+weight_decay: 0.05

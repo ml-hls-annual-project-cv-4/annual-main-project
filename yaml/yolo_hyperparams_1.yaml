@@ -1,8 +1,21 @@
 epochs: 50
 batch: 16
+device: 0
+workers: 4
 save: True
 save_period: 10
+imgsz: [1280, 720]
 exist_ok: False
+optimizer: Adam
+lr0: 0.001
+project: yolov8-objects-detection
+name: detection-objects-exp-1
+amp: True
+seed: 42
 verbose: True
-device: cpu
-pretrained: False
+hsv_h: 0.015
+degrees: 45
+fliplr: 0.4
+mixup: 0.6
+copy_paste: 0.5
+shear: 0.25
