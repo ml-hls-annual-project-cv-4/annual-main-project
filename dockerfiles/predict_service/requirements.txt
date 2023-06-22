@@ -2,7 +2,6 @@ scikit-learn
 numpy
 pandas
 clickhouse_driver
-opencv-python-headless
 scikit-image
 lightgbm
 matplotlib
@@ -11,3 +10,4 @@ uvicorn[standard]
 python-multipart
 starlette_exporter
 ultralytics
+opencv-python-headless
