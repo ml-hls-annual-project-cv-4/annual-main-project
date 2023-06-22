@@ -1,6 +1,4 @@
-import wandb
 from ultralytics import YOLO
-from wandb.integration.yolov8 import add_callbacks as add_wandb_callbacks
 
 from src.contracts.deep_learning.dl_model_manager import DLModelManagerAbstract
 
@@ -11,6 +9,9 @@ class YoloModelManager(DLModelManagerAbstract):
         self.__model = YOLO(model_name, task='detect')
 
         if config is not None:
+            import wandb
+            from wandb.integration.yolov8 import add_callbacks as add_wandb_callbacks
+
             wandb.login(key=config["secret-key"])
             wandb.init(project=config["project-name"])
             add_wandb_callbacks(self.__model, project=config["project-name"])
