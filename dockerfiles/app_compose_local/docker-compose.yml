@@ -12,7 +12,7 @@ services:
       test: ["CMD", "curl", "-f", "-k", "https://localhost:3000/docs"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 15
       start_period: 30s
 
   requests_imitation:
