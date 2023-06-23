@@ -35,9 +35,9 @@ jobs:
       run: |
         echo "${{ secrets.SSL_KEY }}" > api/private.key
         echo "${{ secrets.SSL_CERT }}" > api/cert.crt
-        cat api/private.key
         cp -r dockerfiles/predict_service/* .
         docker build -t predict_service .
+        rm api/private.key api/cert.crt Dockerfile requirements.txt README.md
         
     - name: Log in to the Container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -68,8 +68,9 @@ jobs:
     
     - name: Build req_imitation image
       run: |
-        cp -r dockerfiles/predict_service/* .
+        cp -r dockerfiles/requests_imitation/* .
         docker build -t requests_imitation .
+        rm Dockerfile requirements.txt README.md
         
     - name: Log in to the Container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
