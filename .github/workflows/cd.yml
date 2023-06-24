@@ -24,7 +24,7 @@ jobs:
         ssh-add ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
         
-    - name: connect and pull
+    - name: pull repository
       run: |
         ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
@@ -33,12 +33,35 @@ jobs:
         && git pull origin \
         && exit"
 
+    - name: build predict_service
+      run: |
+        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
+        cd ${{ secrets.WORK_DIR }} \
+        && echo "${{ secrets.SSL_KEY }}" > api/private.key \
+        && echo "${{ secrets.SSL_CERT }}" > api/cert.crt \
+        && cp -r dockerfiles/predict_service/* . \
+        && docker build -t predict_service . \
+        && rm Dockerfile requirements.txt README.md api/private.key api/cert.crt \
+        && exit"
+    
+    - name: build request_imitation
+      run: |
         ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
         && cp -r dockerfiles/requests_imitation/* . \
         && docker build -t requests_imitation . \
         && rm Dockerfile requirements.txt README.md \
         && exit"
+
+    - name: running compose
+      run: |
+        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
+        cd ${{ secrets.WORK_DIR }} \
+        && cd dockerfiles/app_compose/ \
+        && docker compose down \
+        && docker compose up -d \
+        && exit"
+
     - name: cleanup
       run: rm -rf ~/.ssh
     
