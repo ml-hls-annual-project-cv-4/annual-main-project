@@ -35,7 +35,7 @@ jobs:
 
     - name: build predict_service
       run: |
-        ssh -o ServerAliveInterval=3000 ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
+        ssh -o TCPKeepAlive=yes -o ServerAliveCountMax=20 -o ServerAliveInterval=15 ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
         && echo '${{ secrets.SSL_KEY }}' > api/private.key \
         && echo '${{ secrets.SSL_CERT }}' > api/cert.crt \
@@ -46,7 +46,7 @@ jobs:
     
     - name: build request_imitation
       run: |
-        ssh -o ServerAliveInterval=300 ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
+        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
         && cp -r dockerfiles/requests_imitation/* . \
         && docker build -t requests_imitation . \
