@@ -37,8 +37,9 @@ jobs:
       run: |
         ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
-        && echo "${{ secrets.SSL_KEY }}" > api/private.key \
-        && echo "${{ secrets.SSL_CERT }}" > api/cert.crt \
+        && echo 'start key'
+        && echo '${{ secrets.SSL_KEY }}' > api/private.key \
+        && echo '${{ secrets.SSL_CERT }}' > api/cert.crt \
         && ls api/ \
         && cp -r dockerfiles/predict_service/* . \
         && docker build -t predict_service . \
