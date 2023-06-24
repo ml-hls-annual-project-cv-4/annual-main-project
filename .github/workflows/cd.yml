@@ -35,7 +35,7 @@ jobs:
 
     - name: build predict_service
       run: |
-        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
+        ssh -o ServerAliveInterval=300 ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
         && echo 'start key' \
         && echo '${{ secrets.SSL_KEY }}' > api/private.key \
@@ -48,7 +48,7 @@ jobs:
     
     - name: build request_imitation
       run: |
-        ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
+        ssh -o ServerAliveInterval=300 ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
         && cp -r dockerfiles/requests_imitation/* . \
         && docker build -t requests_imitation . \
