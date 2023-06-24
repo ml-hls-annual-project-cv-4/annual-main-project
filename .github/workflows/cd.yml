@@ -37,7 +37,7 @@ jobs:
       run: |
         ssh ${{ secrets.SSH_USER_DEPLOYER }}@${{ secrets.SSH_HOST }} "\
         cd ${{ secrets.WORK_DIR }} \
-        && echo 'start key'
+        && echo 'start key' \
         && echo '${{ secrets.SSL_KEY }}' > api/private.key \
         && echo '${{ secrets.SSL_CERT }}' > api/cert.crt \
         && ls api/ \
