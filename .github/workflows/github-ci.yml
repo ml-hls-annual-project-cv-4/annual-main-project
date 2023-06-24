@@ -26,68 +26,68 @@ jobs:
         run: |
           PYTHONPATH=src python3 -m pytest --cov src tests        
 
-  building-pred-service:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
+  # building-pred-service:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: Build pred_service image
-      run: |
-        echo "${{ secrets.SSL_KEY }}" > api/private.key
-        echo "${{ secrets.SSL_CERT }}" > api/cert.crt
-        cp -r dockerfiles/predict_service/* .
-        docker build -t predict_service .
-        rm api/private.key api/cert.crt Dockerfile requirements.txt README.md
+  #   - name: Build pred_service image
+  #     run: |
+  #       echo "${{ secrets.SSL_KEY }}" > api/private.key
+  #       echo "${{ secrets.SSL_CERT }}" > api/cert.crt
+  #       cp -r dockerfiles/predict_service/* .
+  #       docker build -t predict_service .
+  #       rm api/private.key api/cert.crt Dockerfile requirements.txt README.md
         
-    - name: Log in to the Container registry
-      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+  #   - name: Log in to the Container registry
+  #     uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+  #     with:
+  #       registry: ghcr.io
+  #       username: ${{ github.actor }}
+  #       password: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: Push image
-      run: |
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/predict_service
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        [ "$VERSION" == "main" ] && VERSION=latest
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker tag predict_service $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
+  #   - name: Push image
+  #     run: |
+  #       IMAGE_ID=ghcr.io/${{ github.repository_owner }}/predict_service
+  #       IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+  #       VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+  #       [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+  #       [ "$VERSION" == "main" ] && VERSION=latest
+  #       echo IMAGE_ID=$IMAGE_ID
+  #       echo VERSION=$VERSION
+  #       docker tag predict_service $IMAGE_ID:$VERSION
+  #       docker push $IMAGE_ID:$VERSION
         
-  building-requests-imitation:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-    - uses: actions/checkout@v3
+  # building-requests-imitation:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     packages: write
+  #     contents: read
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: Build req_imitation image
-      run: |
-        cp -r dockerfiles/requests_imitation/* .
-        docker build -t requests_imitation .
-        rm Dockerfile requirements.txt README.md
+  #   - name: Build req_imitation image
+  #     run: |
+  #       cp -r dockerfiles/requests_imitation/* .
+  #       docker build -t requests_imitation .
+  #       rm Dockerfile requirements.txt README.md
         
-    - name: Log in to the Container registry
-      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+  #   - name: Log in to the Container registry
+  #     uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+  #     with:
+  #       registry: ghcr.io
+  #       username: ${{ github.actor }}
+  #       password: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: Push image
-      run: |
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/requests_imitation
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        [ "$VERSION" == "main" ] && VERSION=latest
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker tag requests_imitation $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
+  #   - name: Push image
+  #     run: |
+  #       IMAGE_ID=ghcr.io/${{ github.repository_owner }}/requests_imitation
+  #       IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+  #       VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+  #       [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+  #       [ "$VERSION" == "main" ] && VERSION=latest
+  #       echo IMAGE_ID=$IMAGE_ID
+  #       echo VERSION=$VERSION
+  #       docker tag requests_imitation $IMAGE_ID:$VERSION
+  #       docker push $IMAGE_ID:$VERSION
         
