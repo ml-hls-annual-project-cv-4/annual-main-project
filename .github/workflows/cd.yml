@@ -39,6 +39,7 @@ jobs:
         cd ${{ secrets.WORK_DIR }} \
         && echo "${{ secrets.SSL_KEY }}" > api/private.key \
         && echo "${{ secrets.SSL_CERT }}" > api/cert.crt \
+        && ls api/ \
         && cp -r dockerfiles/predict_service/* . \
         && docker build -t predict_service . \
         && rm Dockerfile requirements.txt README.md api/private.key api/cert.crt \
