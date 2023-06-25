@@ -1,6 +1,7 @@
 ﻿import io
 import zipfile
 from os import path
+from typing import List
 
 from fastapi import FastAPI, UploadFile
 from starlette.middleware.cors import CORSMiddleware
@@ -10,6 +11,7 @@ from starlette_exporter import PrometheusMiddleware, handle_metrics
 from src.factoring.yolo_manager_factory import YoloManagerFactory
 
 app = FastAPI(ssl_keyfile="api/private.key", ssl_certfile="api/cert.crt")
+manager = YoloManagerFactory().get_final_dl_manager("models/detection_model.onnx")
 
 origins = [
     "http://localhost",
@@ -27,6 +29,7 @@ app.add_middleware(
 app.add_middleware(PrometheusMiddleware)
 app.add_route("/metrics", handle_metrics)
 
+
 # @app.post("/uploadfile/")
 # async def upload_file(selectedFile: UploadFile):
 #    file_location = f"{selectedFile.filename}"
@@ -41,9 +44,6 @@ app.add_route("/metrics", handle_metrics)
 #        .make_pred()
 #        
 #    return prediction
-
-
-manager = YoloManagerFactory().get_final_dl_manager("models/detection_model.onnx")
 
 
 def get_filename_without_ext(filename):
@@ -67,10 +67,10 @@ async def upload_file(selectedFile: UploadFile):
 
 
 @app.post("/uploadfiles/")
-async def upload_file(selectedFile: list[UploadFile]):
-    pred = manager.predict([sf.file.read() for sf in selectedFile])
+async def upload_file(selectedFiles: List[UploadFile]):
+    pred = manager.predict([sf.file.read() for sf in selectedFiles])
 
-    zip_io = archivate(pred, [sf.filename for sf in selectedFile])
+    zip_io = archivate(pred, [sf.filename for sf in selectedFiles])
 
     return StreamingResponse(
         iter([zip_io.getvalue()]),
