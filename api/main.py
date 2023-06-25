@@ -67,30 +67,28 @@ async def upload_file(selectedFile: UploadFile):
     return response
 
 
-#not used but in perspective
+@app.post("/uploadfiles/")
+async def upload_file(selectedFile: list[UploadFile]):
+    pred = manager.predict([sf.file.read() for sf in selectedFile])
 
-# @app.post("/uploadfiles/")
-# async def upload_file(selectedFile: list[UploadFile]):
-#     pred = manager.predict([sf.file.read() for sf in selectedFile])
-#
-#     zip_io = archivate(pred, [sf.filename for sf in selectedFile])
-#
-#     return StreamingResponse(
-#         iter([zip_io.getvalue()]),
-#         media_type="application/x-zip-compressed",
-#         headers={"Content-Disposition": f"attachment; filename=predictions.zip"}
-#     )
-#
-#
-# def archivate(pred, files):
-#     zip_io = io.BytesIO()
-#
-#     with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as temp_zip:
-#         for i, p in enumerate(pred):
-#             img_name = get_filename_without_ext(files[i])
-#             img_ext = get_extension(files[i])
-#
-#             img_filename = f"{img_name}_predicted.{img_ext}"
-#             temp_zip.writestr(img_filename, p)
-#
-#     return zip_io
+    zip_io = archivate(pred, [sf.filename for sf in selectedFile])
+
+    return StreamingResponse(
+        iter([zip_io.getvalue()]),
+        media_type="application/x-zip-compressed",
+        headers={"Content-Disposition": f"attachment; filename=predictions.zip"}
+    )
+
+
+def archivate(pred, files):
+    zip_io = io.BytesIO()
+
+    with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as temp_zip:
+        for i, p in enumerate(pred):
+            img_name = get_filename_without_ext(files[i])
+            img_ext = get_extension(files[i])
+
+            img_filename = f"{img_name}_predicted.{img_ext}"
+            temp_zip.writestr(img_filename, p)
+
+    return zip_io
