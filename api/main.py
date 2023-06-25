@@ -44,7 +44,6 @@ app.add_route("/metrics", handle_metrics)
 
 
 manager = YoloManagerFactory().get_final_dl_manager("models/detection_model.onnx")
-app = FastAPI()
 
 
 def get_filename_without_ext(filename):
