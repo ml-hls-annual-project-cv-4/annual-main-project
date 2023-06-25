@@ -46,7 +46,7 @@ export const ImageUpload = () => {
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
         setResult(false);
-        setPrediction("Предсказание: " + response.data);
+        setPrediction(response.data);
       });
     } catch (error) {
       console.log(error);
@@ -117,7 +117,7 @@ export const ImageUpload = () => {
         ) : (
           <></>
         )}
-        {prediction ? <><h1 className="my-2 text-white text-4xl text-center">{prediction}</h1></> : <></>}
+        {prediction ? <><img className="h-auto max-h-96 max-w-full">{prediction}</img></> : <></>}
       </div>
     </form>
     </div>
