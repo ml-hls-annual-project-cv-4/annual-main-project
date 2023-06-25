@@ -19,7 +19,7 @@ origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
-    # allow_credentials=True,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -44,6 +44,7 @@ app.add_route("/metrics", handle_metrics)
 
 
 manager = YoloManagerFactory().get_final_dl_manager("models/detection_model.onnx")
+app = FastAPI()
 
 
 def get_filename_without_ext(filename):
@@ -66,28 +67,30 @@ async def upload_file(selectedFile: UploadFile):
     return response
 
 
-@app.post("/uploadfiles/")
-async def upload_file(selectedFile: list[UploadFile]):
-    pred = manager.predict([sf.file.read() for sf in selectedFile])
+#not used but in perspective
 
-    zip_io = archivate(pred, [sf.filename for sf in selectedFile])
-
-    return StreamingResponse(
-        iter([zip_io.getvalue()]),
-        media_type="application/x-zip-compressed",
-        headers={"Content-Disposition": f"attachment; filename=predictions.zip"}
-    )
-
-
-def archivate(pred, files):
-    zip_io = io.BytesIO()
-
-    with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as temp_zip:
-        for i, p in enumerate(pred):
-            img_name = get_filename_without_ext(files[i])
-            img_ext = get_extension(files[i])
-
-            img_filename = f"{img_name}_predicted.{img_ext}"
-            temp_zip.writestr(img_filename, p)
-
-    return zip_io
+# @app.post("/uploadfiles/")
+# async def upload_file(selectedFile: list[UploadFile]):
+#     pred = manager.predict([sf.file.read() for sf in selectedFile])
+#
+#     zip_io = archivate(pred, [sf.filename for sf in selectedFile])
+#
+#     return StreamingResponse(
+#         iter([zip_io.getvalue()]),
+#         media_type="application/x-zip-compressed",
+#         headers={"Content-Disposition": f"attachment; filename=predictions.zip"}
+#     )
+#
+#
+# def archivate(pred, files):
+#     zip_io = io.BytesIO()
+#
+#     with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as temp_zip:
+#         for i, p in enumerate(pred):
+#             img_name = get_filename_without_ext(files[i])
+#             img_ext = get_extension(files[i])
+#
+#             img_filename = f"{img_name}_predicted.{img_ext}"
+#             temp_zip.writestr(img_filename, p)
+#
+#     return zip_io
