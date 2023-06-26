@@ -10,5 +10,5 @@ class DataServiceFactory(AbstractDataServiceFactory):
         return TrainDataService(source)
 
     @staticmethod
-    def get_eda_data_service(self, source) -> AbstractEDADataService:
+    def get_eda_data_service(source) -> AbstractEDADataService:
         pass
