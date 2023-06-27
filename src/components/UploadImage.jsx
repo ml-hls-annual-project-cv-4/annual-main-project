@@ -71,7 +71,6 @@ fileInput.addEventListener('change', (event) => {
           }
         );
         const url = URL.createObjectURL(response.data);
-        setPreview(null)
         setDownloadLink(url);
         setResult(false);
         console.log(response);
