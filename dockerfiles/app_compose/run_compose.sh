@@ -25,7 +25,7 @@ then
     docker build -t requests_imitation .
 
     rm Dockerfile requirements.txt
-    cd dockerfiles/app_compose_local
+    cd dockerfiles/app_compose
 
 fi
 

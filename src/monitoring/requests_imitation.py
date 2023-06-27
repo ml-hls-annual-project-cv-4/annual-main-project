@@ -39,7 +39,7 @@ class ReqImitation:
         Function sends POST request to predict_service. 
         Images stored in dataset/images/ directory thus it should mounted to docker
         '''
-        file = {'selected_file': open(f'dataset/images/{img_name}', 'rb')}
+        file = {'selectedFile': open(f'dataset/images/{img_name}', 'rb')}
                     
         response=requests.request(
             'POST', 
