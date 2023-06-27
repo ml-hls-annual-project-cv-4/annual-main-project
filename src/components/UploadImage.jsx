@@ -19,6 +19,17 @@ export const ImageUpload = () => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
+
+  useEffect(() => {
+    const fileInput = document.getElementById('fileInput');
+const fileCount = document.getElementById('fileCount');
+
+fileInput.addEventListener('change', (event) => {
+  const count = event.target.files.length;
+  fileCount.textContent = count + ' файл(ов) выбран(о)';
+});
+  }, [selectedFile])
+
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
@@ -48,6 +59,9 @@ export const ImageUpload = () => {
     try {
       setResult(true);
       if (selectedFile.length > 1) {
+        setPreview(null)
+        setDownloadLink(null)
+        setPrediction(null)
         const response = await axios.post(
           "https://annualcv.ru:3000/uploadfiles/",
           formData,
@@ -57,12 +71,14 @@ export const ImageUpload = () => {
           }
         );
         const url = URL.createObjectURL(response.data);
+        setPreview(null)
         setDownloadLink(url);
         setResult(false);
         console.log(response);
         return;
       }
       setDownloadLink(null)
+      setPrediction(null)
       const response = await axios.post(
         "https://annualcv.ru:3000/uploadfile/",
         formData,
@@ -84,20 +100,23 @@ export const ImageUpload = () => {
     <div className="flex flex-col h-screen items-center justify-center mt-20">
       <form onSubmit={handleSubmit} className="">
         <div className="bg-slate-300 bg-opacity-40 rounded-xl p-4 place-items-center flex flex-col">
-          <input
-            accept="image/png, image/jpeg, image/jpg"
-            multiple
-            type="file"
-            onChange={onSelectFile}
-            className="mb-2 text-sm text-grey-500
-            file:py-2 file:px-6
-            file:rounded-full file:border-0
-            file:text-lg file:font-medium
-            file:bg-blue-50 file:text-blue-700
-            hover:file:cursor-pointer hover:file:bg-amber-50
-            hover:file:text-amber-700"
-          />
-          <div className="flex space-x-2">
+        <label>
+  <input
+    accept="image/png, image/jpeg, image/jpg"
+    multiple
+    type="file"
+    onChange={onSelectFile}
+    className="hidden"
+    id="fileInput"
+  />
+  <div className="mb-2 text-sm text-grey-500">
+    <div className="file py-2 px-6 rounded-full border-0 text-lg font-medium bg-blue-50 text-blue-700 hover:cursor-pointer hover:bg-amber-50 hover:text-amber-700">
+      <span id="fileCount">Выбрать файл(ы)</span>
+    </div>
+  </div>
+</label>
+
+          <div className="flex space-x-2 overflow-x-auto">
             {selectedFile &&
               preview?.map((image) => (
                 <img
