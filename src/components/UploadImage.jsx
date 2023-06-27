@@ -59,7 +59,6 @@ fileInput.addEventListener('change', (event) => {
     try {
       setResult(true);
       if (selectedFile.length > 1) {
-        setPreview(null)
         setDownloadLink(null)
         setPrediction(null)
         const response = await axios.post(
