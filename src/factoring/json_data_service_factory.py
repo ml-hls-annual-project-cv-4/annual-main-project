@@ -5,8 +5,10 @@ from src.json_services.eda_data_service import EDADataService
 
 class DataServiceFactory(AbstractDataServiceFactory):
 
-    def get_eda_data_service(self) -> AbstractEDADataService:
+    @staticmethod
+    def get_eda_data_service() -> AbstractEDADataService:
         pass
 
-    def get_eda_data_service(self, json_file_name: str) -> AbstractEDADataService:
+    @staticmethod
+    def get_eda_data_service(json_file_name: str) -> AbstractEDADataService:
         return EDADataService(json_file_name)

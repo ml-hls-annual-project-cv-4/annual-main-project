@@ -56,6 +56,11 @@ def get_extension(filename):
 
 @app.post("/uploadfile/")
 async def upload_file(selectedFile: UploadFile):
+    """
+    Запрашивает изображение для детекции на ней объектов
+    @param selectedFile: Изображение для предсказания
+    @return: Изображение с детектированными объектами
+    """
     pred = manager.predict(selectedFile.file.read())
     filename = get_filename_without_ext(selectedFile.filename)
     ext = get_extension(selectedFile.filename)
@@ -68,6 +73,11 @@ async def upload_file(selectedFile: UploadFile):
 
 @app.post("/uploadfiles/")
 async def upload_file(selectedFiles: List[UploadFile]):
+    """
+    Запрашивает изображения для предсказания на них объектов
+    @param selectedFiles: Изображения для предсказания
+    @return: Архив с изображениями с детектированными объектами
+    """
     pred = manager.predict([sf.file.read() for sf in selectedFiles])
 
     zip_io = archivate(pred, [sf.filename for sf in selectedFiles])

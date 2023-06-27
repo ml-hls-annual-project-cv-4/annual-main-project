@@ -17,6 +17,11 @@ def get_filename_without_ext(filename):
 
 @app.post("/uploadfile/")
 async def upload_file(selected_file: UploadFile):
+    """
+    Запрашивает изображение для детекции на ней объектов
+    @param selectedFile: Изображение для предсказания
+    @return: Изображение с детектированными объектами
+    """
     pred = manager.predict(selected_file.file.read())
     filename = get_filename_without_ext(selected_file.filename)
 
@@ -39,6 +44,11 @@ def archivate(pred, files):
 
 @app.post("/uploadfiles/")
 async def upload_file(selected_files: list[UploadFile]):
+    """
+    Запрашивает изображения для предсказания на них объектов
+    @param selectedFiles: Изображения для предсказания
+    @return: Архив с изображениями с детектированными объектами
+    """
     pred = manager.predict([sf.file.read() for sf in selected_files])
 
     zip_io = archivate(pred, [sf.filename for sf in selected_files])

@@ -15,4 +15,9 @@ def test_log_retrain_without_errors():
 
 def test_log_reset_and_train_without_errors():
     dec = DLLManagerLoggingDecorator(MockDLManager(), path.join(LoggingPathFolderProvider.get_path(), "test_dl_manager.log"))
-    dec.reset_and_train(None)
+    dec.reset_and_train(None, None)
+
+
+def test_log_train_without_errors():
+    dec = DLLManagerLoggingDecorator(MockDLManager(), path.join(LoggingPathFolderProvider.get_path(), "test_dl_manager.log"))
+    dec.train(None, None)
