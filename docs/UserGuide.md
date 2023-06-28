@@ -45,12 +45,11 @@
 
 ![img.png](images/many-selected-files.png)
 
-Дальше разница в том, что на вывод возвращается архив с обработанными картинками.
-
+Дальше разница в том, что на вывод возвращается архив с обработанными картинками. Необходимо нажать на кнопку "Скачать архив".
 ![img.png](images/predicted-many-imgs.png)
 
 ![img.png](images/archive-with-pred-images.png)
 
-![img.png](images/opened-images.png)
+![opened-images.png](images/opened-images.png)
 
 
